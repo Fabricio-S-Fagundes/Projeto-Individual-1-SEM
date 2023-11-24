@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/styleHome_header.css">
+    <link rel="stylesheet" href="style/styleCadastro.css">
+    <link rel="icon" href="style/assets/imgs/logoMinecraft.png">
+    <title>Cadastro</title>
+</head>
+<body>
+
+    <div class="navBar">
+        <div class="header">
+            <img class="mine_comunity" src="style/assets/imgs/faceSteve.jpg">
+            <img id="mine_img_text" src="style/assets/imgs/comunidade-mine-15-11-2023.png">
+        </div>
+
+        <div class="list-navBar">
+            <ul class="list-topics">
+                <li id="li1"><a href="index.html">Home</a></li>
+                <li id="li2"><a href="Login.html">Comunidade</a></li>
+                <li>|</li>
+                <li>|</li>
+                <li id="li3"><a href="Login.html">login</a></li>
+                <li id="li4"><a href="Cadastro.html">Cadastro</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="banner">
+
+            <div class="content">
+
+                <div class="box">
+                    <p>Nome Completo</p>
+                    <input type="text" id="inp_nomeCompleto"><br><br>
+                    <p>E-mail</p>
+                    <input type="email" id="inp_email" placeholder="example@example.com"><br><br>
+                    <p>Data de Nascimento</p>
+                    <input type="date" id="inp_dataNasc"><br><br>
+                    <p>Nome de Usuário</p>
+                    <input id="inp_userName" placeholder="username"><br><br>
+                    <p>Senha</p>
+                    <input onkeyup="confirmarSenha()" type="password" id="inp_senha">
+                    <div class="senha" id="senhaForte"></div>
+                    <br><br>
+                    <p>Confirmar Senha</p>
+                    <input onkeyup="confirmarSenha()" type="password" id="inp_confSenha">
+                    <div class="senha" id="senhaIguais"></div>
+                    <br><br>
+                    <p>Anexe sua skin</p>
+                    <input type="file" id="inp_skin" class="skin">
+                    <br><br>
+                    <button class="botaoCadastrar" onclick="cadastrar()">
+                        Cadastrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card_erro" id="cardErro">
+        <span id="mensagem_erro"></span>
+    </div>
+    
+</body>
+</html>
+<script>
+    
+    
+    function confirmarSenha(){
+        var senha = inp_senha.value;
+        var senhaIgual = inp_confSenha.value;
+    
+        if(senha == undefined || senha == ""){
+    
+        } else if(senha.length > 8){
+                senhaForte.innerHTML = `<span>Senha Forte</span>`;
+        } else {
+            senhaForte.innerHTML = `<span>Senha Fraca</span>`;
+        }
+    
+    }
+    function cadastrar(){
+
+        var nomeUsuario = inp_nomeCompleto.value;
+        var emailUsuario = inp_email.value;
+        var datnasc = inp_dataNasc.value;
+        var senha = inp_senha.value;
+        var senhaIgual = inp_confSenha.value;
+        var usernameUsuario = inp_userName.value;
+        var skinUsuario = inp_skin.value;
+        
+        
+        if(nomeUsuario == undefined || nomeUsuario.trim() == ""){
+            alert(`
+            Nome é um campo obrigátorio.
+            Não pode ser vazio`);
+        } else if (emailUsuario == undefined || 
+                    emailUsuario.trim() == "" ){
+            alert(
+            `Email é um campo obrigátorio.
+            Insira um email válido`);
+            return false;
+
+        } else if(emailUsuario.indexOf('@gmail') == -1 ||
+                    emailUsuario.indexOf('.com') == -1){
+                        alert(`Email é um campo obrigátorio.
+            Insira um email válido`);
+            return false;
+        }else if(senhaIgual == undefined || senhaIgual == ""){
+            alert("insira uma senha");
+            return false;
+
+        } else if(senha == senhaIgual){
+            senhaIguais.innerHTML = `<span>As senhas são iguais</span>`;
+        } else {
+            senhaIguais.innerHTML = `<span>As senhas não são iguais</span>`;
+            return false;
+        }
+
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+        },
+            body: JSON.stringify({
+
+              nomeServer: nomeUsuario,
+              emailServer: emailUsuario,
+              datnascServer: datnasc,
+              usernameServer: usernameUsuario,
+              senhaServer: senha
+            //   skinServer: skinUsuario
+            }),
+        })
+
+        .then(function (resposta) {
+        console.log("resposta: ", resposta);
+
+        if (resposta.ok) {
+
+                alert("Cadastro realizado com sucesso! Redirecionando para tela de Login...");
+
+            setTimeout(() => {
+                window.location = "login.html";
+            }, "2000");
+
+            limparFormulario();
+            finalizarAguardar();
+            } else {
+            throw "Houve um erro ao tentar realizar o cadastro!";
+            }
+      })
+    }
+    
+</script>

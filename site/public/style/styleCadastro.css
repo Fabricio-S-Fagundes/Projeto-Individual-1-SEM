@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+body{
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), 
+    rgba(0, 0, 0, 0)),  url(assets/imgs/backgroundSite-1.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.container{
+    margin: 0;
+    padding-top: 80px;
+    height: 1000px;
+    /* background-image: url(assets/imgs/backgroundSite-1.png);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), 
+    rgba(0, 0, 0, 0)),  url(assets/imgs/backgroundSite-1.png);
+    background-repeat: no-repeat;
+    background-size: contain; */
+}
+
+.banner{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content{
+    /* margin-top: 80px; */
+    margin-top: 100px;
+    color: white;
+    display: flex;
+    width: 400px;
+    height: 600px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    border: 70px solid;
+    border-image: url(assets/imgs/obesidianTexture.png) 50 round;
+    border-image-repeat: repeat; 
+    background-color: black;
+    background-image: url(assets/imgs/portalNether.gif);
+    background-repeat: repeat;
+    background-size: 100px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.85);
+}
+
+/* .boxLogin{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+} */
+
+.box{
+    height: fit-content;
+}
+
+.content .box p{
+    display: flex;
+    text-align: start;
+    margin: 0;
+    font-size: 30px;
+}
+
+.content .box input{
+    width: 200px;
+    height: 17px;
+    border: 3px solid black;
+    border-radius: 4px;
+}
+
+.content .box .botaoCadastrar{
+    margin: 0px 43px 0px;
+    width: 130px;
+    height: 35px;
+    font-family: 'VT323', monospace;
+    font-size: 30px;
+    border: 2px solid black;
+    border-radius: 4px;
+}
+
+.content .box .senha{
+    margin: 0;
+    padding: 0;
+    color: white;
+    text-align: end;
+}
+
+.box .skin{
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    border: none;
+}

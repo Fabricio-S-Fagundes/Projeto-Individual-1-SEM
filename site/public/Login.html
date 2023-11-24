@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/styleHome_header.css">
+    <link rel="stylesheet" href="style/styleCadastro.css">
+    <link rel="icon" href="style/assets/imgs/logoMinecraft.png">
+    <title>Login</title>
+</head>
+<body>
+
+    <div class="navBar">
+        <div class="header">
+            <img class="mine_comunity" src="style/assets/imgs/faceSteve.jpg">
+            <img id="mine_img_text" src="style/assets/imgs/comunidade-mine-15-11-2023.png">
+        </div>
+
+        <div class="list-navBar">
+            <ul class="list-topics">
+                <li id="li1"><a href="index.html">Home</a></li>
+                <li id="li2"><a href="Login.html">Comunidade</a></li>
+                <li>|</li>
+                <li>|</li>
+                <li id="li3"><a href="Login.html">login</a></li>
+                <li id="li4"><a href="Cadastro.html">Cadastro</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="banner">
+
+            <div class="content">
+
+                <div class="box">
+                    <p>username</p>
+                    <input type="text" id="inp_usernameLogin"><br><br>
+                    <p>senha</p>
+                    <input type="password" id="inp_senhaLogin"><br><br>
+                  
+                    <button class="botaoCadastrar" onclick="login()">
+                        Entrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card_erro" id="cardErro">
+        <span id="mensagem_erro"></span>
+    </div>
+    
+</body>
+</html>
+
+<script>
+
+function login() {
+
+        var usernameLogin = inp_usernameLogin.value;
+        var senhaLogin = inp_senhaLogin.value;
+
+        if (usernameLogin == "" || senhaLogin == "") {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
+            finalizarAguardar();
+            return false;
+        }
+        else {
+            setInterval(sumirMensagem, 5000)
+        }
+
+        console.log("FORM LOGIN: ", usernameLogin);
+        console.log("FORM SENHA: ", senhaLogin);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                usernameLoginServer: usernameLogin,
+                senhaLoginServer: senhaLogin
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+
+                    sessionStorage.setItem(id, usernameLogin)
+
+                    sessionStorage.ID_USUARIO = json.id;
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.USERNAME_USUARIO = json.username;
+                    sessionStorage.SENHA_USUARIO = json.senha;
+
+                    setTimeout(function () {
+                        window.location = "Comunidade.html";
+                    }, 1000); // apenas para exibir o loading
+
+                });
+
+            } else {
+
+                alert("Usuário não encontrado");
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+
+    function sumirMensagem() {
+        cardErro.style.display = "none"
+    }
+
+</script>

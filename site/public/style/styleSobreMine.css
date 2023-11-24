@@ -1,0 +1,65 @@
+
+.father{
+    margin: 0;
+    padding: 100px;
+    height: 1000px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), 
+    rgba(0, 0, 0, 0)),  url(assets/imgs/backgroundSite-1.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.mine_history{
+    margin-bottom:80px;
+    display: flex;
+    flex-direction: column;
+}
+
+.box_1{
+    display: flex;
+    justify-content: center;
+}
+
+.container{
+    height: 330px;
+    width: 650px;
+    background-color: black;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), 
+    rgba(0, 0, 0, 0.4));
+    border-radius: 10px;
+}
+
+
+.content{
+    padding: 5px;
+    display: flex;
+}
+
+h1, p{
+    color: white;
+}
+
+.container p, img{
+    margin: 5px;
+    display: flex;
+}
+
+.title_box_1{
+    margin: 8px;
+    padding: 0px 5px 0px;
+    width: 250px;
+    height: 30px;
+}
+
+.text_box_1{
+    width: 350px;
+    height: 250px;
+    font-size: 18px;
+    overflow: auto;
+    overflow: -moz-hidden-unscrollable;
+}
+ 
+.primeiraVersao{
+    width: 350px;
+    height: 250px;
+}

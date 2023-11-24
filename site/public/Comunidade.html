@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/styleHome_header.css">
+    <link rel="stylesheet" href="style/styleComunidade.css">
+    <link rel="icon" href="assets/imgs/logoMinecraft.png">
+    <title>comunidade</title>
+</head>
+<body>
+
+        <div class="navBar">
+            <div class="header">
+                <img class="mine_comunity" src="style/assets/imgs/faceSteve.jpg">
+                <img id="mine_img_text" src="style/assets/imgs/comunidade-mine-15-11-2023.png">
+            </div>
+
+            <div class="list-navBar">
+                <ul class="list-topics">
+                    <li id="li2" onclick="sair()">Sair</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="father">
+
+            <div class="mine_history">
+
+                <div class="box_1">
+
+                    <div class="container">
+
+                        <div class="container1">
+
+                            <p>Comente uma duvida, ou uma experiência sua :) </p>
+
+                            <div class="postagemPost">
+                                <textarea id="inp_post" class="campoPostagem" name="mensagem" rows="5" cols="100"></textarea>
+
+                                <div class="anexarImg">
+                                    <button class="botaoPublicar" onclick="publicarPost()">
+                                        Publicar
+                                    </button>
+                                    <input type="file" id="inp_anexoImg">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="Posts" id="todosPosts">
+
+                        </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+</body>
+</html>
+
+<script>
+
+    function publicarPost(){
+
+        var textPost = inp_post.value;
+        var img = document.getElementById('inp_anexoImg');
+        var fkUsuario = sessionStorage.getItem("ID_USUARIO");
+
+        if(textPost == undefined || textPost.trim() == ""){
+
+            alert("Não possivel publicar sem algum texto");
+            return false;
+        }
+
+        fetch("/posts/inserir", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+        },
+            body: JSON.stringify({
+
+                textPostServer: textPost,
+                imgServer: img,
+                fkUsuarioServer: idUsuario      
+            }),
+        })
+
+    }
+
+    function sair(){
+        sessionStorage.clear();
+        window.location = "../login.html";
+    }
+
+</script>
