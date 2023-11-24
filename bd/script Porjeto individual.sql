@@ -35,25 +35,6 @@ primary key(idPost, fkUsuario)
 
 -- update postagem set nCurtida = (sum(nCurtida + 1));
 
-create table comentario (
-idComentario int auto_increment,
-fkUsuarioPost int,
-constraint fkUsuPostCom
-	foreign key(fkUsuarioPost)
-    references postagem(fkUsuario),
-fkPost int,
-constraint fkPostCom
-	foreign key(fkPost)
-    references postagem(idPost),
-fkUsuarioComent int,
-constraint fkUsuComent
-	foreign key(fkUsuarioComent)
-    references usuario(idUsuario),
-primary key(idComentario, fkUsuarioPost, fkPost, fkUsuarioComent),
-textoComent text,
-dtComentario timestamp
-);
-
 select * from usuario;
 
 select * from postagem;
