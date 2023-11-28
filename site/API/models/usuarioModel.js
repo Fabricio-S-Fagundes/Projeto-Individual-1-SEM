@@ -18,6 +18,11 @@ function cadastrar(nome, email, datnasc, username, senha, skin) {
     var instrucao = `
         INSERT INTO usuario (idUsuario, nomeComp, email, dtNasc, username, senha) VALUES (null,'${nome}', '${email}', '${datnasc}', '${username}','${senha}');
     `;
+
+    // var instrucaoDois = `
+    // INSERT INTO skin () VALUES
+    // `;
+
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 

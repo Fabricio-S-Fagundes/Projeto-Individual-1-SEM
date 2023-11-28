@@ -1,34 +1,19 @@
-var usuarioModel = require("../models/usuarioModel");
-// var aquarioModel = require("../models/aquarioModel");
+var postModel = require("../models/postModel");
 
-function autenticar(req, res) {
-    var username = req.body.usernameLoginServer;
-    var senha = req.body.senhaLoginServer;
 
-    if (username == undefined) {
-        res.status(400).send("Username não existe");
-    } else if (senha == undefined) {
-        res.status(400).send("Sua senha está errada");
-    } else {
+function chamarPosts(req, res) {
 
-        usuarioModel.autenticar(username, senha)
+        postModel.chamarPosts()
             .then(
-                function (resultadoAutenticar) {
-                    console.log(`\nResultados encontrados: ${resultadoAutenticar.length}`);
-                    console.log(`Resultados: ${JSON.stringify(resultadoAutenticar)}`); // transforma JSON em String
+                function (resultadoChamar) {
+                    console.log(`\nResultados encontrados: ${resultadoChamar.length}`);
+                    console.log(`Resultados: ${JSON.stringify(resultadoChamar)}`); // transforma JSON em String
 
-                if (resultadoAutenticar.length == 1) {
-                        console.log(resultadoAutenticar);                   
+                if (resultadoChamar) {
+                        console.log(resultadoChamar);                   
                             res.json({
-                                id: resultadoAutenticar[0].idUsuario,
-                                email: resultadoAutenticar[0].email,
-                                username: resultadoAutenticar[0].username,
-                                senha: resultadoAutenticar[0].senha
+                                posts: resultadoChamar
                             }); 
-                    } else if (resultadoAutenticar.length == 0) {
-                        res.status(403).send("Username e/ou senha inválido(s)");
-                    } else {
-                        res.status(403).send("Mais de um usuário com o mesmo login e senha!");
                     }
                 }
             ).catch(
@@ -40,32 +25,33 @@ function autenticar(req, res) {
             );
     }
 
-}
 
-function cadastrar(req, res) {
+function inserirPost(req, res) {
+
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
-    var nome = req.body.nomeServer;
-    var email = req.body.emailServer;
-    var datnasc = req.body.datnascServer;
-    var username = req.body.usernameServer;
-    var senha = req.body.senhaServer;
+
+    var fkUsuario = req.body.fkUsuarioServer;
+    var texto = req.body.textPostServer;
+    var img = req.body.imgServer;
+    var nCurtidas = req.body.nCurtidasServer;
+
+    console.log(fkUsuario);
+    console.log(texto);
+    console.log(img);
+    console.log(nCurtidas);
+
     // var skin = skinServer
 
     // Faça as validações dos valores
-    if (nome == undefined) {
-        res.status(400).send("Seu nome está vazio!");
-    } else if (email == undefined) {
-        res.status(400).send("Seu email está vazio!");
-    } else if (datnasc == undefined) {
-        res.status(400).send("Insira sua data de nascimento!");
-    } else if (username == undefined) {
-        res.status(400).send("Insira um nome de usuário!");
-    } else if (senha == undefined){
-        res.status(400).send("Insira uma senha para seu login!")
+
+    if (texto == undefined || texto.trim() == "") {
+        res.status(400).send("Sua publicação está vazia!");
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar(nome, email, datnasc, username, senha)
+
+        postModel.inserirPost(fkUsuario, texto, img,
+            nCurtidas)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -74,7 +60,7 @@ function cadastrar(req, res) {
                 function (erro) {
                     console.log(erro);
                     console.log(
-                        "\nHouve um erro ao realizar o cadastro! Erro: ",
+                        "\nHouve um erro ao realizar a publicação! Erro: ",
                         erro.sqlMessage
                     );
                     res.status(500).json(erro.sqlMessage);
@@ -84,6 +70,6 @@ function cadastrar(req, res) {
 }
 
 module.exports = {
-    autenticar,
-    cadastrar
+    chamarPosts,
+    inserirPost
 }

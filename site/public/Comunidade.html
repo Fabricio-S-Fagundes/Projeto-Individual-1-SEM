@@ -13,7 +13,7 @@
         <div class="navBar">
             <div class="header">
                 <img class="mine_comunity" src="style/assets/imgs/faceSteve.jpg">
-                <img id="mine_img_text" src="style/assets/imgs/comunidade-mine-15-11-2023.png">
+                <a id="mine_img_text" href="index.html"><img src="style/assets/imgs/comunidade-mine-15-11-2023.png"></a>
             </div>
 
             <div class="list-navBar">
@@ -33,7 +33,7 @@
 
                         <div class="container1">
 
-                            <p>Comente uma duvida, ou uma experiência sua :) </p>
+                            <p>Comente uma experiência sua :) dentro do Minecraft </p>
 
                             <div class="postagemPost">
                                 <textarea id="inp_post" class="campoPostagem" name="mensagem" rows="5" cols="100"></textarea>
@@ -44,16 +44,15 @@
                                     </button>
                                     <input type="file" id="inp_anexoImg">
                                 </div>
-
                             </div>
-                        </div>
-
-                        <div class="Posts" id="todosPosts">
-
-                        </div>
 
                         </div>
                     </div>
+                    
+                    <div id="containerAll">
+
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -62,32 +61,119 @@
 </html>
 
 <script>
+    buscarPosts()
+
+    setInterval(() => {
+        buscarPosts()
+    }, 2000);
+
+    function buscarPosts(){
+        
+        fetch("/posts/chamarPosts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                
+                    carregarPosts(json.posts)
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+    }
+
+    function carregarPosts(posts){
+
+        containerAll.innerHTML = ``;
+
+        for(var contador = 1;
+            contador <= posts.length;
+            contador ++){
+
+                var text = posts[contador - 1].txtPostagem.replaceAll('\n','<br>')
+
+
+                containerAll.innerHTML += `
+                <div class="container_public">
+
+                        <div class="publica">
+
+                            <div class="userdata">
+                                <img id="skinUser" src="${posts[contador - 1].skin}">
+                                <p class="nickname">${posts[contador - 1].username}</p>
+                            </div>
+                            <div class="textPublic">
+                                ${text}
+                            </div>
+                            <div class="imagemPublic">
+                                <img id="casinhaDoMine" src="${posts[contador - 1].imagem}">
+                            </div>
+                            data: ${posts[contador - 1].dtPost}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+        }
+    }
+
 
     function publicarPost(){
 
         var textPost = inp_post.value;
         var img = document.getElementById('inp_anexoImg');
-        var fkUsuario = sessionStorage.getItem("ID_USUARIO");
+        var file = img.files[0];
+        var caminhoComp = file.name;
+        var fkUsuario = sessionStorage.ID_USUARIO;
+        var nCurtidas = 0;
 
         if(textPost == undefined || textPost.trim() == ""){
 
             alert("Não possivel publicar sem algum texto");
             return false;
+            
+        } else {
+
+            fetch("/posts/inserirPost", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+            },
+                body: JSON.stringify({
+    
+                    fkUsuarioServer: fkUsuario,
+                    textPostServer: textPost,
+                    imgServer: caminhoComp,
+                    nCurtidaServer: nCurtidas    
+                }),
+            })
+    
+            .then(function (resposta) {
+            console.log("resposta: ", resposta);
+    
+            if (resposta.ok) {
+                    alert("publicação enviada com sucesso realizado com sucesso!");
+                } else {
+                throw "Houve um erro ao tentar enviar a publicação!";
+                }
+          });
+
         }
-
-        fetch("/posts/inserir", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-        },
-            body: JSON.stringify({
-
-                textPostServer: textPost,
-                imgServer: img,
-                fkUsuarioServer: idUsuario      
-            }),
-        })
-
+        
     }
 
     function sair(){

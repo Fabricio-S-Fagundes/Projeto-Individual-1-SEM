@@ -19,7 +19,7 @@
         <div class="list-navBar">
             <ul class="list-topics">
                 <li id="li1"><a href="index.html">Home</a></li>
-                <li id="li2"><a href="Login.html">Comunidade</a></li>
+                <li id="li2" onclick="verificarLogin()">Comunidade</li>
                 <li>|</li>
                 <li>|</li>
                 <li id="li3"><a href="Login.html">login</a></li>
@@ -69,17 +69,40 @@
 </html>
 <script>
     
+    function verificarLogin(){
+
+        if(sessionStorage.ID_USUARIO){
+            setTimeout(() => {
+                window.location = "comunidade.html";
+            }, "1000");
+        } else {
+            setTimeout(() => {
+                alert("Não existe nenhum usuário logado");
+                window.location = "login.html";
+            }, "1000");
+        }
+
+    }
+
+
+    
     
     function confirmarSenha(){
         var senha = inp_senha.value;
         var senhaIgual = inp_confSenha.value;
     
         if(senha == undefined || senha == ""){
-    
+
         } else if(senha.length > 8){
                 senhaForte.innerHTML = `<span>Senha Forte</span>`;
         } else {
             senhaForte.innerHTML = `<span>Senha Fraca</span>`;
+        } 
+        if(senha != senhaIgual){
+            senhaIguais.innerHTML = `<span>As senhas não são iguais</span>`;
+            return false;
+        } else {
+            senhaIguais.innerHTML = `<span>As senhas são iguais</span>`;
         }
     
     }
@@ -109,15 +132,6 @@
                     emailUsuario.indexOf('.com') == -1){
                         alert(`Email é um campo obrigátorio.
             Insira um email válido`);
-            return false;
-        }else if(senhaIgual == undefined || senhaIgual == ""){
-            alert("insira uma senha");
-            return false;
-
-        } else if(senha == senhaIgual){
-            senhaIguais.innerHTML = `<span>As senhas são iguais</span>`;
-        } else {
-            senhaIguais.innerHTML = `<span>As senhas não são iguais</span>`;
             return false;
         }
 

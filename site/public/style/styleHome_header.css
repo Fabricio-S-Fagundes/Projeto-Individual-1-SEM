@@ -40,8 +40,8 @@ body{
         width: 350px;
         height: 80px;
         align-self: center;
-
         }
+        
     }
     .list-navBar{
         display: flex;
@@ -75,7 +75,7 @@ body{
     }
 
     #li1,#li2,#li3,#li4{  
-        transition: transform 0.5s ease-in-out;
+        transition: transform 0.2s ease-in-out;
     }
 
     #li1:hover,#li2:hover,#li3:hover,#li4:hover{  

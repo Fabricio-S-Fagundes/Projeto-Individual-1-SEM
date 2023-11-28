@@ -18,8 +18,8 @@
 
             <div class="list-navBar">
                 <ul class="list-topics">
-                    <li id="li1"><a href="Home.html">Home</a></li>
-                    <li id="li2"><a href="comunidade.html">Comunidade</a></li>
+                    <li id="li1"><a href="index.html">Home</a></li>
+                    <li id="li2" onclick="verificarLogin()">Comunidade</li>
                     <li>|</li>
                     <li>|</li>
                     <li id="li3"><a href="Login.html">login</a></li>
@@ -50,3 +50,20 @@
     
 </body>
 </html>
+
+<script>
+    function verificarLogin(){
+
+        if(sessionStorage.ID_USUARIO){
+            setTimeout(() => {
+                window.location = "comunidade.html";
+            }, "1000");
+        } else {
+            setTimeout(() => {
+                alert("Não existe nenhum usuário logado");
+                window.location = "login.html";
+            }, "1000");
+        }
+
+    }
+</script>

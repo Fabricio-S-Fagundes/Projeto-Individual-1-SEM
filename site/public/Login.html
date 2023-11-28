@@ -93,7 +93,7 @@ function login() {
                     console.log(json);
                     console.log(JSON.stringify(json));
 
-                    sessionStorage.setItem(id, usernameLogin)
+                    // sessionStorage.setItem(idUsuario, username);
 
                     sessionStorage.ID_USUARIO = json.id;
                     sessionStorage.EMAIL_USUARIO = json.email;
@@ -101,8 +101,9 @@ function login() {
                     sessionStorage.SENHA_USUARIO = json.senha;
 
                     setTimeout(function () {
+                        alert("Login realizado com sucesso, redirecionando para a comunidade");
                         window.location = "Comunidade.html";
-                    }, 1000); // apenas para exibir o loading
+                    }, 500); // apenas para exibir o loading
 
                 });
 
