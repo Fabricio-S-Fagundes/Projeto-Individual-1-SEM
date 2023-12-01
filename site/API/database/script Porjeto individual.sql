@@ -13,32 +13,66 @@ senha varchar(20)
 
 create table skin(
 idSkin int primary key auto_increment,
-arqSkin varchar (100),
+arqSkin blob null,
 fkUsuario int,
 constraint fkUsuSkin 
-	foreign key (fkUsuario)
-    references usuario (idUsuario)
+	foreign key(fkUsuario)
+    references usuario(idUsuario)
 );
 
 create table postagem(
 idPost int auto_increment,
 fkUsuario int,
 txtPostagem text,
-imagem varchar(200),
-dtPost timestamp default current_timestamp,
-nCurtidas int null,
+imagem blob null,
+dtPost timestamp,
 constraint fkUsuPost
 	foreign key(fkUsuario)
 	references usuario(idUsuario),
 primary key(idPost, fkUsuario)
 );
 
-update postagem set nCurtidas = nCurtidas + 1
- 		where idPost = 5 and fkUsuario = 2;
 
+-- -----------------------------------
+select
+count(idUsuario) QtdeTotalUser
+from usuario
+union all
+select
+count(distinct fkUsuario) QtdePostUser
+from postagem;
+
+-- ----------------------------------
+select
+count(fkUsuario) QtdeSkinUser
+from skin
+where(
+select arqSkin <> "imagensSkins/crepper.png"
+)
+union all
+select
+count(fkUsuario) QtdeSkinDefault
+from skin
+where(
+select arqSkin = "imagensSkins/crepper.png"
+);
+-- ------------------------------------
+select * from skin;
+
+set foreign_key_checks = 0;
 
 select * from usuario;
 
-select * from postagem;
+delete from usuario where idUsuario = 6;
+delete from skin where fkUsuario = 6;
 
-truncate table usuario;
+
+
+select
+count(idUsuario) qtde
+from usuario
+union all
+select
+count(idPost)
+from postagem;
+

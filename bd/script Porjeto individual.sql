@@ -26,31 +26,10 @@ fkUsuario int,
 txtPostagem text,
 imagem blob null,
 dtPost timestamp,
-nCurtidas int null,
-nComentarios int null,
 constraint fkUsuPost
 	foreign key(fkUsuario)
 	references usuario(idUsuario),
 primary key(idPost, fkUsuario)
-);
-
-create table comentario (
-idComentario int auto_increment,
-fkUsuarioPost int,
-constraint fkUsuPostCom
-	foreign key(fkUsuarioPost)
-    references postagem(fkUsuario),
-fkPost int,
-constraint fkPostCom
-	foreign key(fkPost)
-    references postagem(idPost),
-fkUsuarioComent int,
-constraint fkUsuComent
-	foreign key(fkUsuarioComent)
-    references usuario(idUsuario),
-primary key(idComentario, fkUsuarioPost, fkPost, fkUsuarioComent),
-textoComent text,
-dtComentario timestamp
 );
 
 
