@@ -9,27 +9,36 @@ function autenticar(username, senha) {
     return database.executar(instrucao);
 }
 
-// Coloque os mesmos parâmetros aqui. Vá para a var instrucao
-function cadastrar(nome, email, datnasc, username, senha, skin) {
+function cadastrar(nome, email, datnasc, username, senha) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", username, email, senha);
     
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
+    
     var instrucao = `
         INSERT INTO usuario (idUsuario, nomeComp, email, dtNasc, username, senha) VALUES (null,'${nome}', '${email}', '${datnasc}', '${username}','${senha}');
+        `;
+        
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    // console.log("Executando a instrução SQL: \n" + instrucaoSkin);
+
+    return database.executar(instrucao);
+}
+
+function cadastrarSkin(skin){
+
+    var insertSkin = `
+    INSERT INTO skin (idSkin, arqSkin, fkUsuario) VALUES (null, 'imagensSkins/${skin}', (SELECT max(idUsuario) FROM usuario));
     `;
 
-    // var instrucaoDois = `
-    // INSERT INTO skin () VALUES
-    // `;
+    console.log("Executando a instrução SQL: \n" + insertSkin);
 
-    console.log("Executando a instrução SQL: \n" + instrucao);
-    return database.executar(instrucao);
-
-    // INSERT INTO skin VALUES(null,'${skin}', '${}')
+    return database.executar(insertSkin);
 }
+
 
 module.exports = {
     autenticar,
-    cadastrar
+    cadastrar,
+    cadastrarSkin
 };

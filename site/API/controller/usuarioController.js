@@ -1,5 +1,5 @@
 var usuarioModel = require("../models/usuarioModel");
-// var aquarioModel = require("../models/aquarioModel");
+
 
 function autenticar(req, res) {
     var username = req.body.usernameLoginServer;
@@ -49,9 +49,9 @@ function cadastrar(req, res) {
     var datnasc = req.body.datnascServer;
     var username = req.body.usernameServer;
     var senha = req.body.senhaServer;
-    // var skin = skinServer
-
+   
     // Faça as validações dos valores
+    
     if (nome == undefined) {
         res.status(400).send("Seu nome está vazio!");
     } else if (email == undefined) {
@@ -83,7 +83,33 @@ function cadastrar(req, res) {
     }
 }
 
+function cadastrarSkin(req, res){
+    
+    var skin = req.body.skinServer;
+
+    console.log(skin);
+
+        usuarioModel.cadastrarSkin(skin)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar ao cadastrar a skin Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    
+}
+
+
 module.exports = {
     autenticar,
-    cadastrar
+    cadastrar,
+    cadastrarSkin
 }

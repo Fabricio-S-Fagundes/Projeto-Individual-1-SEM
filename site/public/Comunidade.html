@@ -18,8 +18,11 @@
 
             <div class="list-navBar">
                 <ul class="list-topics">
+                    <li id="li2"><a href="Comunidade.html">Comunidade</a></li>
+                    <li id="li2"><a href="Dashboard.html">Comparativos</a></li>
                     <li id="li2" onclick="sair()">Sair</li>
                 </ul>
+                <span id="nameTag" class="nameTag">MineUser</span>
             </div>
         </div>
         
@@ -63,9 +66,14 @@
 <script>
     buscarPosts()
 
-    setInterval(() => {
-        buscarPosts()
-    }, 2000);
+    // setInterval(() => {
+    //     buscarPosts()
+    // }, 3500);
+
+    function carregarUsername(posts){
+
+        nameTag.innerHTML = sessionStorage.USERNAME_USUARIO;
+    }
 
     function buscarPosts(){
         
@@ -85,6 +93,7 @@
                     console.log(JSON.stringify(json));
                 
                     carregarPosts(json.posts)
+                    carregarUsername(json.posts)
                 });
             }
 
@@ -98,48 +107,84 @@
 
         containerAll.innerHTML = ``;
 
+
         for(var contador = 1;
             contador <= posts.length;
             contador ++){
 
                 var text = posts[contador - 1].txtPostagem.replaceAll('\n','<br>')
 
+               if( posts[contador - 1].imagem == "NULL" || posts[contador - 1].imagem == null){
 
-                containerAll.innerHTML += `
-                <div class="container_public">
-
-                        <div class="publica">
-
-                            <div class="userdata">
-                                <img id="skinUser" src="${posts[contador - 1].skin}">
-                                <p class="nickname">${posts[contador - 1].username}</p>
+                    containerAll.innerHTML += `
+    
+                    <div class="container_public">
+    
+                            <div class="publica">
+    
+                                <div class="userdata">
+                                    <img id="skinUser" src="${posts[contador - 1].arqSkin}">
+                                    <p class="nickname">${posts[contador - 1].username}</p>
+                                </div>
+                                <div class="textPublic">
+                                    ${text}
+                                </div>
+                                <div class="imagemPublic">
+                                </div>
+                                
+                                data: ${posts[contador - 1].dtPost}
+    
                             </div>
-                            <div class="textPublic">
-                                ${text}
-                            </div>
-                            <div class="imagemPublic">
-                                <img id="casinhaDoMine" src="${posts[contador - 1].imagem}">
-                            </div>
-                            data: ${posts[contador - 1].dtPost}
-
+    
                         </div>
-
-                    </div>
-
-                `;
+    
+                    `;
+               } else {
+                   
+                   containerAll.innerHTML += `
+    
+                    <div class="container_public">
+    
+                            <div class="publica">
+    
+                                <div class="userdata">
+                                    <img id="skinUser" src="${posts[contador - 1].arqSkin}">
+                                    <p class="nickname">${posts[contador - 1].username}</p>
+                                </div>
+                                <div class="textPublic">
+                                    ${text}
+                                </div>
+                                <div class="imagemPublic">
+                                    <img id="casinhaDoMine" src="${posts[contador - 1].imagem}">
+                                </div>
+                                data: ${posts[contador - 1].dtPost}
+    
+                            </div>
+    
+                        </div>
+    
+                    `;
+               }
 
         }
     }
 
+    var img = null;
 
     function publicarPost(){
 
         var textPost = inp_post.value;
-        var img = document.getElementById('inp_anexoImg');
+            img = document.getElementById('inp_anexoImg');
         var file = img.files[0];
-        var caminhoComp = file.name;
         var fkUsuario = sessionStorage.ID_USUARIO;
-        var nCurtidas = 0;
+
+        if(file == undefined){
+
+            var caminhoComp = null;
+
+        } else{
+            var caminhoComp = file.name;
+        }
 
         if(textPost == undefined || textPost.trim() == ""){
 
@@ -157,8 +202,7 @@
     
                     fkUsuarioServer: fkUsuario,
                     textPostServer: textPost,
-                    imgServer: caminhoComp,
-                    nCurtidaServer: nCurtidas    
+                    imgServer: caminhoComp    
                 }),
             })
     
@@ -167,13 +211,15 @@
     
             if (resposta.ok) {
                     alert("publicação enviada com sucesso realizado com sucesso!");
+                    buscarPosts()
+                    // location.reload()
                 } else {
                 throw "Houve um erro ao tentar enviar a publicação!";
                 }
           });
 
         }
-        
+
     }
 
     function sair(){

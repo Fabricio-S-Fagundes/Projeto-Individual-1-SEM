@@ -69,7 +69,68 @@ function inserirPost(req, res) {
     }
 }
 
+function analyticsGrafico1(req, res){
+
+    postModel.analyticsGrafico1()
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar a analise Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+function analyticsGrafico2(req, res){
+
+    postModel.analyticsGrafico2()
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar a analise 2 Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function analyticsKPI(req, res){
+
+    postModel.analyticsKPI()
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar a analise 3 Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+
+}
+
+
 module.exports = {
     chamarPosts,
-    inserirPost
+    inserirPost,
+    analyticsGrafico1,
+    analyticsGrafico2,
+    analyticsKPI
 }

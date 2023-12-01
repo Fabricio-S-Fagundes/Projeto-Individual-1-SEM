@@ -1,0 +1,77 @@
+body{
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), 
+    rgba(0, 0, 0, 0)),  url(assets/imgs/backgroundSite-1.png);
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+
+.father{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 100px;
+    height: 750px;
+}
+
+.mine_history{
+    margin-bottom:80px;
+}
+
+.box_1{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 550px;
+    width: 1000px;
+    background-color: black;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), 
+    rgba(0, 0, 0, 0.4));
+    border-radius: 10px;
+}
+
+.graficos{
+    margin: 5px;
+    width: 1000px;
+    height: 400px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.graficos #grafico_1, #grafico_2{
+    font-size: 18px;
+    margin-top: 100px;
+    width: 450px;
+    height: 400px;
+    background-color: white;
+    border: 3px solid greenyellow;
+    border-radius: 4px;
+}
+canvas{
+    font-size: 20px;
+}
+
+.dashboard_Grafico{
+    height: 300px;
+}
+
+.KPI{
+    width: 800px;
+    display: flex;
+    justify-content: space-evenly;
+    margin: auto;
+    color: white;
+    font-size: 28px;
+}
+
+.KPI #TotalUsers, #TotalPosts{
+    display: flex;
+}

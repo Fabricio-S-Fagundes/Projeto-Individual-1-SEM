@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/styleHome_header.css">
+    <link rel="stylesheet" href="style/styleDashboard.css">
+    <link rel="icon" href="assets/imgs/logoMinecraft.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>comunidade</title>
+</head>
+<body>
+
+        <div class="navBar">
+            <div class="header">
+                <img class="mine_comunity" src="style/assets/imgs/faceSteve.jpg">
+                <a id="mine_img_text" href="index.html"><img src="style/assets/imgs/comunidade-mine-15-11-2023.png"></a>
+            </div>
+
+            <div class="list-navBar">
+                <ul class="list-topics">
+                    <li id="li2"><a href="Comunidade.html">Comunidade</a></li>
+                    <li id="li2"><a href="Dashboard.html">Comparativos</a></li>
+                    <li id="li2" onclick="sair()">Sair</li>
+                </ul>
+                <span id="nameTag" class="nameTag">MineUser</span>
+            </div>
+        </div>
+        
+        <div class="father">
+
+            <div class="mine_history">
+
+                <div class="box_1">
+
+                    <div class="container">
+
+                        <div class="graficos">
+                            <div class="dashboard_Grafico">
+                                <canvas id="grafico_1"></canvas>
+                            </div>
+                            <div class="dashboard_Grafico">
+                                <canvas id="grafico_2"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="KPI">
+                            <p id="TotalUsers">Total de usuarios cadastrados: <p id="users"></p></p>
+                            <p id="TotalPosts">Total de publições no geral: <p id="posts"></p></p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    
+</body>
+</html>
+
+<script>
+    
+    var totalUsuario = 0;
+    
+    var UsuariosPosts = 0;
+    
+    var UsuariosComSkin = 0;
+    
+    var UsuariosSemSkin = 0;
+    
+    var UsersAll = 0;
+    
+    var PostsAll = 0;
+    
+    grafico1()
+    grafico_2()
+    KPIs()
+    carregarUsername()
+    // buscarPosts()
+
+    function carregarUsername(){
+
+        nameTag.innerHTML = sessionStorage.USERNAME_USUARIO;
+    }
+
+    // function buscarPosts(posts){
+        
+    //     fetch("/posts/chamarPosts", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         }
+    //     }).then(function (resposta) {
+    //         console.log("ESTOU NO THEN DO entrar()!")
+
+    //         if (resposta.ok) {
+    //             console.log(resposta);
+
+    //             resposta.json().then(json => {
+    //                 console.log(json);
+    //                 console.log(JSON.stringify(json));
+                
+    //                 carregarPosts(json.posts)
+    //                 carregarUsername(json.posts)
+    //             });
+    //         }
+
+    //     }).catch(function (erro) {
+    //         console.log(erro);
+    //     })
+
+    // }
+
+
+    function grafico1(){
+
+        fetch("/posts/analyticsGrafico1", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+            }
+            })
+    
+            .then(function (resposta) {
+            console.log("resposta: ", resposta);
+    
+            if (resposta.ok) {
+                    
+                resposta.json().then(json => {
+                    console.log(json[0].QtdeTotalUser);
+
+                    totalUsuario = json[0].QtdeTotalUser;
+
+                    UsuariosPosts = json[1].QtdeTotalUser;
+
+                    criar()
+                });
+
+                } else {
+                throw "Houve um erro ao tentar buscar a analise!";
+                }
+          });
+    }
+
+      function grafico_2(){
+
+        fetch("/posts/analyticsGrafico2", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+            }
+            })
+    
+            .then(function (resposta) {
+            console.log("resposta: ", resposta);
+    
+            if (resposta.ok) {
+                    
+                resposta.json().then(json => {
+                    console.log(json);
+
+                    UsuariosComSkin = json[0].QtdeSkinUser;
+
+                    UsuariosSemSkin = json[1].QtdeSkinUser;
+
+                    criar2()
+                });
+
+                } else {
+                throw "Houve um erro ao tentar buscar a analise!";
+                }
+          });
+    }
+        function KPIs(){
+
+            fetch("/posts/analyticsKPI", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+            }
+            })
+    
+            .then(function (resposta) {
+            console.log("resposta: ", resposta);
+    
+            if (resposta.ok) {
+                    
+                resposta.json().then(json => {
+                    console.log(json);
+
+                    UsersAll = json[0].Qtde;
+
+                    PostsAll = json[1].Qtde;
+
+                    criar3()
+                });
+
+                } else {
+                throw "Houve um erro ao tentar buscar a analise!";
+                }
+          });
+        }
+
+    function sair(){
+        sessionStorage.clear();
+        window.location = "../login.html";
+    }
+</script>
+<script>
+
+function criar(){
+
+    grafico_1.innerHTML = ``;
+
+    const ctx = document.getElementById('grafico_1');
+  
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [''],
+        datasets: [{
+          label: 'Total de Usuários cadastrados',
+          backgroundColor: `rgb(255, 0, 0)`,
+          borderColor: `rgb(255, 0, 0)`,
+          data: [totalUsuario]
+        },
+        {
+          label: 'Usuários que tem 1 Post no minimo',
+          backgroundColor: `rgb(0, 0, 255)`,
+          borderColor: `rgb(0, 0, 255)`,
+          data: [UsuariosPosts]
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+}
+function criar2(){
+
+    grafico_2.innerHTML = ``;
+
+    const ctx2 = document.getElementById('grafico_2');
+  
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: [''],
+        datasets: [{
+          label: 'Total de Usuários com skin',
+          backgroundColor: `rgb(255, 0, 0)`,
+          borderColor: `rgb(255, 0, 0)`,
+          data: [UsuariosComSkin]
+        },
+        {
+          label: 'Total de Usuários Skin padrão',
+          backgroundColor: `rgb(0, 0, 255)`,
+          borderColor: `rgb(0, 0, 255)`,
+          data: [UsuariosSemSkin]
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });  
+}  
+
+function criar3(){
+    users.innerHTML = UsersAll;
+
+    posts.innerHTML = PostsAll;
+}   
+// setInterval(() => {
+//     grafico1()
+// }, 500);
+  </script>
+   

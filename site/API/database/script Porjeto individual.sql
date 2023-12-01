@@ -13,18 +13,18 @@ senha varchar(20)
 
 create table skin(
 idSkin int primary key auto_increment,
-arqSkin varchar(100),
+arqSkin varchar (100),
 fkUsuario int,
 constraint fkUsuSkin 
-	foreign key(fkUsuario)
-    references usuario(idUsuario)
+	foreign key (fkUsuario)
+    references usuario (idUsuario)
 );
 
 create table postagem(
 idPost int auto_increment,
 fkUsuario int,
 txtPostagem text,
-imagem varchar(100),
+imagem varchar(200),
 dtPost timestamp default current_timestamp,
 nCurtidas int null,
 constraint fkUsuPost
@@ -42,5 +42,3 @@ select * from usuario;
 select * from postagem;
 
 truncate table usuario;
-
-
